@@ -48,14 +48,15 @@ int[] MaxSlidingWindow(int[] nums, int k)
 
     int max = nums[0];
 
+    max = nums.Skip(0).Take(k).Max();
     //ilk parçadaki max
-    for (int j = 0; j < k; j++)
-    {
-        if (nums[j] > max)
-        {
-            max = nums[j];
-        }
-    }
+    //for (int j = 0; j < k; j++)
+    //{
+    //    if (nums[j] > max)
+    //    {
+    //        max = nums[j];
+    //    }
+    //}
 
     maxList[0] = max;
 
@@ -85,6 +86,31 @@ int[] MaxSlidingWindow(int[] nums, int k)
 
     return maxList;
 }
+
+int[] MaxSlidingWindowQueue(int[] nums, int k)
+{
+    var steps = nums.Length - k + 1;
+
+    var maxList = new int[steps];
+
+    var queue = new Queue<int>();
+    for (int i = 0; i < k; i++)
+    {
+        queue.Enqueue(nums[i]);
+    }
+    maxList[0] = queue.Max();
+
+    for (int i = k; i < nums.Length; i++)
+    {
+        queue.Dequeue();
+        queue.Enqueue(nums[i]);
+
+        maxList[i - k + 1] = queue.Max();
+    }
+
+    return maxList;
+}
+
 
 //passed 49/50 test
 var mx = MaxSlidingWindow(new int[] { 1,-1 },1);
